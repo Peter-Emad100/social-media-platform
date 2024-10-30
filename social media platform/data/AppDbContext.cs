@@ -29,7 +29,8 @@ namespace social_media_platform.data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(p => p.PostID);
+            modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(c => c.PostId);
+            modelBuilder.Entity<Post>().HasMany(p=>p.ReactLogs).WithOne(r=>r.Post).HasForeignKey(r=>r.PostId);
         }
     }
 }

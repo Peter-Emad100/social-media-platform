@@ -14,7 +14,7 @@ namespace social_media_platform.models
         public string LastName { get; set; }
         public DateTime CommentCreationTime { get; set; }
         public string Content {  get; set; }
-        public long PostID { get; set; }
+        public long PostId { get; set; }
         public Post Post { get; set; }
     }
 }
