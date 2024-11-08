@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using social_media_platform.data;
 
@@ -11,9 +12,11 @@ using social_media_platform.data;
 namespace social_media_platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108205909_reactRelationship")]
+    partial class reactRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace social_media_platform.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("comments", (string)null);
+                    b.ToTable("comments");
                 });
 
             modelBuilder.Entity("social_media_platform.models.FollowedUser", b =>
@@ -71,7 +74,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("FollowedUserId");
 
-                    b.ToTable("followedUsers", (string)null);
+                    b.ToTable("followedUsers");
                 });
 
             modelBuilder.Entity("social_media_platform.models.Post", b =>
@@ -102,7 +105,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("PostId");
 
-                    b.ToTable("posts", (string)null);
+                    b.ToTable("posts");
                 });
 
             modelBuilder.Entity("social_media_platform.models.React", b =>
@@ -115,7 +118,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("ReactId");
 
-                    b.ToTable("Reacts", (string)null);
+                    b.ToTable("Reacts");
                 });
 
             modelBuilder.Entity("social_media_platform.models.ReactLog", b =>
@@ -149,7 +152,7 @@ namespace social_media_platform.Migrations
 
                     b.HasIndex("ReactId");
 
-                    b.ToTable("reactLogs", (string)null);
+                    b.ToTable("reactLogs");
                 });
 
             modelBuilder.Entity("social_media_platform.models.User", b =>
@@ -178,7 +181,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("social_media_platform.models.Comment", b =>

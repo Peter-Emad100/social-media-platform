@@ -12,9 +12,9 @@ namespace social_media_platform.models
         public long UserId { get; set; }
         public string FirstName {  get; set; }
         public string LastName { get; set; }
-        public long ReactId {  get; set; }
+        public byte ReactId {  get; set; }
+        public React React { get; set; }
         public long PostId {  get; set; }
-
         public Post Post { get; set; }
 
     }

@@ -16,7 +16,7 @@ namespace social_media_platform.data
         public DbSet<ReactLog> reactLogs { get; set; }
         public DbSet<User> users { get; set; }
         public DbSet<FollowedUser> followedUsers { get; set; }
-        public DbSet<AvailableReact> availableReacts { get; set; }
+        public DbSet<React> Reacts { get; set; }
 
 
         public AppDbContext()
@@ -30,7 +30,8 @@ namespace social_media_platform.data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(c => c.PostId);
-            modelBuilder.Entity<Post>().HasMany(p=>p.ReactLogs).WithOne(r=>r.Post).HasForeignKey(r=>r.PostId);
+            modelBuilder.Entity<Post>().HasMany(p => p.ReactLogs).WithOne(r => r.Post).HasForeignKey(r => r.PostId);
+            modelBuilder.Entity<React>().HasMany(r => r.ReactLogs).WithOne(rl => rl.React).HasForeignKey(rl => rl.ReactId);
         }
     }
 }
