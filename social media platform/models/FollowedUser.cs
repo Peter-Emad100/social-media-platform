@@ -9,6 +9,8 @@ namespace social_media_platform.models
     internal class FollowedUser
     {
         public long UserId {  get; set; }
+        public User User { get; set; }
         public long FollowedUserId { get; set;}
+        public User User2 { get; set; }
     }
 }

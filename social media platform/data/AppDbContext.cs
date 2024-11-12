@@ -32,6 +32,8 @@ namespace social_media_platform.data
             modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(c => c.PostId);
             modelBuilder.Entity<Post>().HasMany(p => p.ReactLogs).WithOne(r => r.Post).HasForeignKey(r => r.PostId);
             modelBuilder.Entity<React>().HasMany(r => r.ReactLogs).WithOne(rl => rl.React).HasForeignKey(rl => rl.ReactId);
+            modelBuilder.Entity<User>().HasMany(u => u.FollowedUser).WithOne(fu => fu.User).HasForeignKey(fu => fu.UserId);
+            modelBuilder.Entity<User>().HasMany(u => u.FollowedUser2).WithOne(fu => fu.User2).HasForeignKey(fu => fu.FollowedUserId);
         }
     }
 }

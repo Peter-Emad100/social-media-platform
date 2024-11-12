@@ -13,5 +13,8 @@ namespace social_media_platform.models
         public string LastName {  get; set; }
         public string HashedPassword {  get; set; }
         public string Email {  get; set; }
+
+        public ICollection<FollowedUser> FollowedUser { get; set; }
+        public ICollection<FollowedUser> FollowedUser2 { get; set; }
     }
 }
