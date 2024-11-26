@@ -60,15 +60,15 @@ namespace social_media_platform.Migrations
 
             modelBuilder.Entity("social_media_platform.models.FollowedUser", b =>
                 {
-                    b.Property<long>("FollowedUserId")
+                    b.Property<long>("FollowerId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("FollowedId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("FollowedUserId");
+                    b.HasKey("FollowerId", "FollowedId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FollowedId");
 
                     b.ToTable("followedUsers");
                 });
@@ -193,21 +193,21 @@ namespace social_media_platform.Migrations
 
             modelBuilder.Entity("social_media_platform.models.FollowedUser", b =>
                 {
-                    b.HasOne("social_media_platform.models.User", "User2")
-                        .WithMany("FollowedUser2")
-                        .HasForeignKey("FollowedUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("social_media_platform.models.User", "Followed")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowedId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("social_media_platform.models.User", "User")
-                        .WithMany("FollowedUser")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("social_media_platform.models.User", "Follower")
+                        .WithMany("FollowedUsers")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Followed");
 
-                    b.Navigation("User2");
+                    b.Navigation("Follower");
                 });
 
             modelBuilder.Entity("social_media_platform.models.ReactLog", b =>
@@ -243,9 +243,9 @@ namespace social_media_platform.Migrations
 
             modelBuilder.Entity("social_media_platform.models.User", b =>
                 {
-                    b.Navigation("FollowedUser");
+                    b.Navigation("FollowedUsers");
 
-                    b.Navigation("FollowedUser2");
+                    b.Navigation("Followers");
                 });
 #pragma warning restore 612, 618
         }
