@@ -5,11 +5,7 @@ namespace social_media_platform
     {
         static void Main(string[] args)
         {
-            using (var context = new AppDbContext())
-            {
-                context.Database.EnsureCreated();
-                Console.WriteLine("Database created successfully!");
-            }
+            userfeatures.SignUp();
         }
     }
 }
