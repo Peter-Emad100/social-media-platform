@@ -47,6 +47,7 @@ namespace social_media_platform.data
                 .WithMany(u => u.Followers)
                 .HasForeignKey(fu => fu.FollowedId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>().Property(u=>u.UserId).ValueGeneratedOnAdd();
 
         }
     }

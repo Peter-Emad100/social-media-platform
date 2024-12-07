@@ -6,6 +6,7 @@ namespace social_media_platform
         static void Main(string[] args)
         {
             userfeatures.SignUp();
+            userfeatures.login();
         }
     }
 }

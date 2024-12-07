@@ -55,7 +55,7 @@ namespace social_media_platform.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("comments");
+                    b.ToTable("comments", (string)null);
                 });
 
             modelBuilder.Entity("social_media_platform.models.FollowedUser", b =>
@@ -70,7 +70,7 @@ namespace social_media_platform.Migrations
 
                     b.HasIndex("FollowedId");
 
-                    b.ToTable("followedUsers");
+                    b.ToTable("followedUsers", (string)null);
                 });
 
             modelBuilder.Entity("social_media_platform.models.Post", b =>
@@ -101,7 +101,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("PostId");
 
-                    b.ToTable("posts");
+                    b.ToTable("posts", (string)null);
                 });
 
             modelBuilder.Entity("social_media_platform.models.React", b =>
@@ -114,7 +114,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("ReactId");
 
-                    b.ToTable("Reacts");
+                    b.ToTable("Reacts", (string)null);
                 });
 
             modelBuilder.Entity("social_media_platform.models.ReactLog", b =>
@@ -148,7 +148,7 @@ namespace social_media_platform.Migrations
 
                     b.HasIndex("ReactId");
 
-                    b.ToTable("reactLogs");
+                    b.ToTable("reactLogs", (string)null);
                 });
 
             modelBuilder.Entity("social_media_platform.models.User", b =>
@@ -177,7 +177,7 @@ namespace social_media_platform.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("social_media_platform.models.Comment", b =>
