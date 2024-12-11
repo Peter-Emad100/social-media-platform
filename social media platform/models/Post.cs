@@ -16,7 +16,7 @@ namespace social_media_platform.models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public DateTime PostCreationTime { get; set; }
+        public DateTimeOffset PostCreationTime { get; set; }
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<ReactLog> ReactLogs{ get; set; }
