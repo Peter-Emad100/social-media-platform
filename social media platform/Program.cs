@@ -7,8 +7,14 @@ namespace social_media_platform
         static void Main(string[] args)
         {
             Userfeatures userfeatures = new Userfeatures();
-            userfeatures.SignUp();
             User user =userfeatures.login();
+            PostServices postservices = new PostServices();
+            postservices.addPost(user);
+            Console.WriteLine("enter post id");
+            long id = Convert.ToInt64(Console.ReadLine());
+            Console.WriteLine(postservices.editPost(user, id));
+            Console.WriteLine(postservices.removePost(user, id));
+
         }
     }
 }
