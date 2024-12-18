@@ -14,6 +14,11 @@ namespace social_media_platform
 
     internal class Userfeatures
     {
+        internal AppDbContext _appDbContext;
+        public Userfeatures(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
         private static bool checkEmail(String email)
         {
           
@@ -34,7 +39,6 @@ namespace social_media_platform
         }
         public void SignUp()
         {
-            var context = new AppDbContext();
             Console.WriteLine("Welcom to Sign UP");
             String firstName;
             String lastName;
@@ -50,12 +54,12 @@ namespace social_media_platform
                 Console.WriteLine("Please Enter your Last name");
                 lastName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(lastName));
-            do
+                do
             {
                 Console.WriteLine("Please Enter your Email");
                 email = Console.ReadLine();
 
-            } while (!checkEmail(email) || context.users.Any(u => u.Email == email));
+            } while (!checkEmail(email) || _appDbContext.users.Any(u => u.Email == email));
 
             do
             {
@@ -65,12 +69,11 @@ namespace social_media_platform
 
             password = BCrypt.EnhancedHashPassword(password);
 
-            using (context)
-            {
+            
                 User user = new User() { FirstName= firstName, LastName = lastName, Email = email , HashedPassword=password};
-                context.users.Add(user);
-                context.SaveChanges();
-            }
+                _appDbContext.users.Add(user);
+                _appDbContext.SaveChanges();
+            
         }
         private static bool checkPassword(String password)
         {
@@ -78,8 +81,7 @@ namespace social_media_platform
         }
         public User login()
         {
-            using (var context = new AppDbContext()) {
-                long user_id = 0;
+            long user_id = 0;
                 do
                 {
                     Console.WriteLine("Enter your Email");
@@ -90,7 +92,7 @@ namespace social_media_platform
                         Console.WriteLine("Wrong email or password format");
                         continue;
                     }
-                    User user = context.users.FirstOrDefault(u => u.Email == email);
+                    User user = _appDbContext.users.FirstOrDefault(u => u.Email == email);
                     if (user != null && BCrypt.EnhancedVerify(password, user.HashedPassword))
                     {
                         return user;
@@ -101,6 +103,6 @@ namespace social_media_platform
                     }
 
                 } while(true);
-        } }
+        } 
     }
 }

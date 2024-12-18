@@ -23,9 +23,12 @@ namespace social_media_platform.data
         {
             Connection = "Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;";
         }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Connection);
+            //optionsBuilder.UseSqlServer(Connection);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,5 +53,6 @@ namespace social_media_platform.data
             modelBuilder.Entity<User>().Property(u=>u.UserId).ValueGeneratedOnAdd();
 
         }
+        
     }
 }
