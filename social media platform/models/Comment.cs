@@ -12,7 +12,7 @@ namespace social_media_platform.models
         public long UserId {  get; set; }
         public string FirstName {  get; set; }
         public string LastName { get; set; }
-        public DateTime CommentCreationTime { get; set; }
+        public DateTimeOffset CommentCreationTime { get; set; }
         public string Content {  get; set; }
         public long PostId { get; set; }
         public Post Post { get; set; }

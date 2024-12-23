@@ -17,12 +17,10 @@ namespace social_media_platform
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
             userfeatures.SignUp();
             User user =userfeatures.login();
-            PostServices postservices = new PostServices(serviceProvider.GetRequiredService<AppDbContext>());
-            postservices.addPost(user);
-            Console.WriteLine("enter post id");
-            long id = Convert.ToInt64(Console.ReadLine());
-            Console.WriteLine(postservices.editPost(user, id));
-            Console.WriteLine(postservices.removePost(user, id));
+            CommentService commentService = new CommentService(serviceProvider.GetRequiredService<AppDbContext>());
+            commentService.CreateComment(user, 1);
+            Console.WriteLine(commentService.ChangeComment(user,6));
+            Console.WriteLine(commentService.DeleteComment(user, 1));
 
         }
     }

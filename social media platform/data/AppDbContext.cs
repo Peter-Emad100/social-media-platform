@@ -28,7 +28,10 @@ namespace social_media_platform.data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(Connection);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;");
+            }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
