@@ -17,10 +17,8 @@ namespace social_media_platform
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
             userfeatures.SignUp();
             User user =userfeatures.login();
-            CommentService commentService = new CommentService(serviceProvider.GetRequiredService<AppDbContext>());
-            commentService.CreateComment(user, 1);
-            Console.WriteLine(commentService.ChangeComment(user,6));
-            Console.WriteLine(commentService.DeleteComment(user, 1));
+            ReactService reactService = new ReactService(serviceProvider.GetRequiredService<AppDbContext>());
+            reactService.AddReact(user, 1);
 
         }
     }

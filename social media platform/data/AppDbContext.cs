@@ -16,7 +16,6 @@ namespace social_media_platform.data
         public DbSet<ReactLog> reactLogs { get; set; }
         public DbSet<User> users { get; set; }
         public DbSet<FollowedUser> followedUsers { get; set; }
-        public DbSet<React> Reacts { get; set; }
 
 
         public AppDbContext()
@@ -30,7 +29,7 @@ namespace social_media_platform.data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;", options => options.CommandTimeout(300));
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,8 +38,6 @@ namespace social_media_platform.data
                 .WithOne(c => c.Post).HasForeignKey(c => c.PostId);
             modelBuilder.Entity<Post>().HasMany(p => p.ReactLogs)
                 .WithOne(r => r.Post).HasForeignKey(r => r.PostId);
-            modelBuilder.Entity<React>().HasMany(r => r.ReactLogs)
-                .WithOne(rl => rl.React).HasForeignKey(rl => rl.ReactId);
             modelBuilder.Entity<FollowedUser>()
                 .HasKey(fu => new { fu.FollowerId, fu.FollowedId });
             modelBuilder.Entity<FollowedUser>()
@@ -54,6 +51,7 @@ namespace social_media_platform.data
                 .HasForeignKey(fu => fu.FollowedId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<User>().Property(u=>u.UserId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<ReactLog>().HasKey(Rl => new { Rl.PostId, Rl.UserId });
 
         }
         
