@@ -17,10 +17,10 @@ namespace social_media_platform
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
 
             User user =userfeatures.login();
-            ReactService reactService = new ReactService(serviceProvider.GetRequiredService<AppDbContext>());
-            //reactService.AddReact(user, 3);
-            Console.WriteLine(reactService.editReact(user, 3));
-            //Console.WriteLine(reactService.RemoveReact(user, 3));
+            FollowService followService = new FollowService(serviceProvider.GetRequiredService<AppDbContext>());
+            followService.follow(user, 3);
+            //followService.unfollow(user, 3);
+
 
         }
     }
