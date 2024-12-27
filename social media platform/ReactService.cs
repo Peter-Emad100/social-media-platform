@@ -34,5 +34,40 @@ namespace social_media_platform
                 } while (true);
             return true;
         }
+        public bool RemoveReact(User user , long postId) {
+            ReactLog reactLog = _appDbContext.reactLogs.SingleOrDefault(r => r.UserId==user.UserId && r.PostId==postId);
+            if (reactLog != null)
+            {
+                _appDbContext.Remove(reactLog);
+                _appDbContext.SaveChanges();
+                Console.WriteLine("Your react has been deleted");
+                return true;
+            }
+            return false;
+        }
+        public bool editReact(User user, long postId)
+        {
+            ReactLog reactLog=_appDbContext.reactLogs.SingleOrDefault(r=> r.PostId == postId && r.UserId==user.UserId);
+            if (reactLog != null)
+            {
+                do
+                {
+                    Console.WriteLine("what do you want to change your react to ?");
+                    Console.WriteLine("choose your react \n 0 => Love \n" +
+                        " 1 => Gem \n 2 => Haha \n 3 => warning \n 4 =>Sad \n 5 => Angry");
+                    ReactsEnum reactenum = new ReactsEnum();
+                    if (int.TryParse(Console.ReadLine(), out int reactInt) &&
+                        Enum.IsDefined(reactenum.GetType(), reactInt))
+                    {
+                        reactenum = (ReactsEnum)reactInt;
+                        reactLog.React = reactenum;
+                        _appDbContext.SaveChanges();
+                        Console.WriteLine("your react has been changed");
+                        return true;
+                    }
+                } while (true);
+            }
+            return false;
+        }
     }
 }

@@ -15,10 +15,12 @@ namespace social_media_platform
             options.UseSqlServer("Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;"));
             var serviceProvider= services.BuildServiceProvider();
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
-            userfeatures.SignUp();
+
             User user =userfeatures.login();
             ReactService reactService = new ReactService(serviceProvider.GetRequiredService<AppDbContext>());
-            reactService.AddReact(user, 1);
+            //reactService.AddReact(user, 3);
+            Console.WriteLine(reactService.editReact(user, 3));
+            //Console.WriteLine(reactService.RemoveReact(user, 3));
 
         }
     }
