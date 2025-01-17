@@ -1,4 +1,5 @@
-﻿using social_media_platform.data;
+﻿using Nito.Collections;
+using social_media_platform.data;
 using social_media_platform.models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace social_media_platform
         internal AppDbContext _appDbContext;
         private List<long> followedUsersIds=new List<long>();
         private int current=0;
-        private LinkedList<Post> posts=new LinkedList<Post>();
+        private Deque<Post> posts=new Deque<Post>();
         public HomePage(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
@@ -27,11 +28,11 @@ namespace social_media_platform
         }
         private void PostsAddFirst()
         {
-            posts.AddFirst(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[current]).FirstOrDefault());
+            posts.AddToFront(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[current]).FirstOrDefault());
         }
         private void PostsAddLast()
         {
-            posts.AddLast(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[current]).FirstOrDefault());
+            posts.AddToBack(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[current]).FirstOrDefault());
         }
         private void CallFivePosts(Action act)
         {
