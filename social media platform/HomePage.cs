@@ -11,40 +11,73 @@ namespace social_media_platform
     internal class HomePage
     {
         internal AppDbContext _appDbContext;
+        private List<long> followedUsersIds=new List<long>();
+        private int current=0;
+        private LinkedList<Post> posts=new LinkedList<Post>();
         public HomePage(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        List<long> followedUsersIds;
-        private List<long> GetListOfFollowedUsers(User user)
+        private void GetListOfFollowedUsers(User user)
         {
-            var followedUsers = _appDbContext.followedUsers
+               followedUsersIds = _appDbContext.followedUsers
                 .Where(f => f.FollowerId == user.UserId)
                 .Select(f => f.FollowedId)
                 .ToList();
-            return followedUsers;
+        }
+        private void PostsAddFirst()
+        {
+            posts.AddFirst(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[current]).FirstOrDefault());
+        }
+        private void PostsAddLast()
+        {
+            posts.AddLast(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[current]).FirstOrDefault());
+        }
+        private void CallFivePosts(Action act)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                if (followedUsersIds.Count > current)
+                {
+                    act();
+                    current++;
+                }
+                /*
+                if (posts.First() == null)
+                {
+                    posts.RemoveFirst();
+                }
+                if (posts.Last() == null)
+                {
+                    posts.RemoveLast();
+                }*/
+            }
+        }
+        private bool showPost(Post posty)
+        {
+            Console.WriteLine($"{posty.FirstName} {posty.LastName} \n {posty.Content} " +
+                $"\n  comments: \n {posty.Comments}");
+            return true;
         }
         public bool showMultiPosts(User user)
         {
-            followedUsersIds ??= GetListOfFollowedUsers(user);
-            int i = followedUsersIds.Count();
-            long postId;
-            while (i > 0)
+            GetListOfFollowedUsers(user);
+            CallFivePosts(PostsAddFirst);
+            foreach (Post posty in posts)
             {
-                showPost(i, out postId);
-                i--;
+                showPost(posty);
             }
             return true;
-
         }
-        public int showPost(long FollowedUserId, out long postId)
+        private long ShowComment(Comment comment)
         {
-
-            var post = _appDbContext.posts.LastOrDefault(p => p.UserId == FollowedUserId);
-            Console.WriteLine($"{post.FirstName} {post.LastName} \n {post.Content} " +
-                $"\n  comments: \n {post.Comments}");
-            postId = post.PostId;
-            return 1;
+            try
+            {
+                Console.WriteLine($"{comment.FirstName} {comment.LastName} \n " +
+                    $"{comment.Content}\n {comment.CommentCreationTime}");
+                return comment.CommentId;
+            }
+            catch { return -1; }
         }
         public void ShowMultiComments(List<Comment> comments)
         {
@@ -72,7 +105,7 @@ namespace social_media_platform
                         }
                         else
                         {
-                            Console.WriteLine("sorry you input was incorrect")
+                            Console.WriteLine("sorry you input was incorrect");
                         }
 
 
@@ -87,16 +120,6 @@ namespace social_media_platform
             {
                 Console.WriteLine("there is no comments on this post, be the first and leave your comment");
             }
-        }
-        public long ShowComment(Comment comment)
-        {
-            try
-            {
-                Console.WriteLine($"{comment.FirstName} {comment.LastName} \n " +
-                    $"{comment.Content}\n {comment.CommentCreationTime}");
-                return comment.CommentId;
-            }
-            catch { return -1; }
         }
     }
 }

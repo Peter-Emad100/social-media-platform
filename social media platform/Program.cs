@@ -15,11 +15,12 @@ namespace social_media_platform
             options.UseSqlServer("Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;"));
             var serviceProvider= services.BuildServiceProvider();
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
-
             User user =userfeatures.login();
-            FollowService followService = new FollowService(serviceProvider.GetRequiredService<AppDbContext>());
-            followService.follow(user, 3);
+            //FollowService followService = new FollowService(serviceProvider.GetRequiredService<AppDbContext>());
+            //followService.follow(user, 3);
             //followService.unfollow(user, 3);
+            HomePage homepage = new HomePage(serviceProvider.GetRequiredService<AppDbContext>());
+            homepage.showMultiPosts(user);
 
 
         }
