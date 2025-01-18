@@ -16,12 +16,13 @@ namespace social_media_platform
             var serviceProvider= services.BuildServiceProvider();
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
             User user =userfeatures.login();
-            //FollowService followService = new FollowService(serviceProvider.GetRequiredService<AppDbContext>());
-            //followService.follow(user, 3);
-            //followService.unfollow(user, 3);
             HomePage homepage = new HomePage(serviceProvider.GetRequiredService<AppDbContext>());
-            homepage.showMultiPosts(user);
-
+            homepage.PreparePosts(user);
+            int choice =homepage.showMultiPosts(user);
+            if(choice == 7)
+            {
+                homepage.showMultiPosts(user);
+            }
 
         }
     }

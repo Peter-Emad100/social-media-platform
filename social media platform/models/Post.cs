@@ -20,5 +20,18 @@ namespace social_media_platform.models
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<ReactLog> ReactLogs{ get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            Post post = (Post)obj;
+            if (post.PostId == this.PostId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
