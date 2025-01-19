@@ -19,11 +19,13 @@ namespace social_media_platform
             HomePage homepage = new HomePage(serviceProvider.GetRequiredService<AppDbContext>());
             homepage.PreparePosts(user);
             int choice =homepage.showMultiPosts(user);
-            if(choice == 7)
+            while (true)
             {
-                homepage.showMultiPosts(user);
+                if (choice == Helper.nextpostnum || choice == Helper.previousPostnum)
+                {
+                    homepage.showMultiPosts(user);
+                }
             }
-
         }
     }
 }

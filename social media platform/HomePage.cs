@@ -4,6 +4,7 @@ using social_media_platform.models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,19 +70,17 @@ namespace social_media_platform
         }
         private int takeUserChoice()
         {
-            Console.WriteLine("press 1 for next post \n" +
-                "press 2 for  watching comments \n" +
-                "press 3 for unfollow \n" +
-                "press 4 for react \n" +
-                "press 5 for editing your own react if you already reacted\n" +
-                "press 5 for writing your own comment\n" +
-                "press 6 for unfollow \n"+
-                "press 7 for the next post \n"+
-                "press 8 for the previous post");
+            Console.WriteLine($@"press {Helper.nextpostnum} for next post
+                press {Helper.previousPostnum} for the previous post
+                press 3 for  watching comments
+                press 4 for unfollow
+                press 5 for react
+                press 6 for editing your own react if you already reacted
+                press {Helper.lastOptionChoice} for writing your own comment");
             int y;
             if( int.TryParse(Console.ReadLine(),out y))
             {
-                if(y >0 && y < 9)
+                if(y >0 && y <=Helper.lastOptionChoice)
                 {
                     return y;
                 }
@@ -95,26 +94,35 @@ namespace social_media_platform
         }
         public int showMultiPosts(User user)
         {
-             if (postsDeque.Last().Equals(postsDeque[currentPostIndex]))
-            {
-                CallFivePosts(PostsAddLast);
-            }
             if (currentPostIndex < postsDeque.Count())
             {
                 showPost(postsDeque[currentPostIndex]);
                 
             }
+            else
+            {
+                Console.WriteLine("that all you have for today");
+                Thread.Sleep(5000);
+                Process.GetCurrentProcess().Kill();
+            }
            int choice= takeUserChoice();
-           if (choice == 8 && postsDeque.First().Equals(postsDeque[currentPostIndex])){
+           if (choice == Helper.previousPostnum &&
+                postsDeque.First().Equals(postsDeque[currentPostIndex])){
                 Post post = postsDeque[currentPostIndex];
                 CallFivePosts(PostsAddFirst);
                 currentPostIndex = postsDeque.IndexOf(post) - 1;
             }
-           else if(choice == 8)
+           else if(choice == Helper.previousPostnum)
             {
                 currentPostIndex--;
             }
-           else if (choice == 7)
+           else if (choice == Helper.nextpostnum &&
+                postsDeque.Last().Equals(postsDeque[currentPostIndex]))
+            {
+                CallFivePosts(PostsAddLast);
+                currentPostIndex++;
+            }
+           else if( choice == Helper.nextpostnum)
             {
                 currentPostIndex++;
             }
@@ -145,6 +153,9 @@ namespace social_media_platform
                     {
                         if (choice == 0)
                         {
+
+
+
                             continue;
                         }
                         else if (choice == 1){
