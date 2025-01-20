@@ -15,15 +15,34 @@ namespace social_media_platform
             options.UseSqlServer("Server=localhost;Database=SocialMediaDb;Integrated Security=true;TrustServerCertificate=True;"));
             var serviceProvider= services.BuildServiceProvider();
             Userfeatures userfeatures = new Userfeatures(serviceProvider.GetRequiredService<AppDbContext>());
-            User user =userfeatures.login();
+            User user = userfeatures.login();
             HomePage homepage = new HomePage(serviceProvider.GetRequiredService<AppDbContext>());
             homepage.PreparePosts(user);
-            int choice =homepage.showMultiPosts(user);
+            long currentPostID;
+            int choice =homepage.showMultiPosts(user,out currentPostID);
+            FollowService followService=new FollowService(serviceProvider.GetRequiredService<AppDbContext>());
+            PostServices postServices = new PostServices(serviceProvider.GetRequiredService<AppDbContext>());
+            ReactService reactservice = new ReactService(serviceProvider.GetRequiredService<AppDbContext>());
             while (true)
             {
-                if (choice == Helper.nextpostnum || choice == Helper.previousPostnum)
+                if (choice == Helper.nextpostNum || choice == Helper.previousPostNum)
                 {
-                    homepage.showMultiPosts(user);
+                    homepage.showMultiPosts(user,out currentPostID);
+                }
+                else if(choice == Helper.unfollowNum)
+                {
+                    if (followService.unfollow(user, currentPostID))
+                        Console.WriteLine("you unfollowed this user");
+                    else
+                        Console.WriteLine("you already unfollowed this user before");
+                    Console.WriteLine("what do you want to do next ?");
+                    choice = homepage.takeUserChoice();
+                }
+                else if(choice == Helper.reactNum)
+                {
+                    reactservice.AddReact(user, currentPostID);
+
+                    choice = homepage.takeUserChoice();
                 }
             }
         }

@@ -19,6 +19,34 @@ namespace social_media_platform
             ReactsEnum reactsEnum = new ReactsEnum();
             do
             {
+                ReactLog reactLog = _appDbContext.reactLogs.SingleOrDefault(r => r.UserId == user.UserId && r.PostId == postId);
+                if (reactLog != null)
+                {
+                    Console.WriteLine("you already have reacted to this comment");
+                    Console.WriteLine("for deleting you comment press 1");
+                    Console.WriteLine("for editing you comment press 2");
+                    Console.WriteLine("for back to post service press 3");
+                    int y;
+                    if (int.TryParse(Console.ReadLine(), out y))
+                    {
+                        switch (y)
+                        {
+                            case 1:
+                                return RemoveReact(user, postId);
+                            case 2:
+                                return editReact(user, postId);
+
+                            case 3:
+                                return true;
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("sorry your choice is not valid, you will be back to posts services ");
+                        return true;
+                    }
+                    }
                 Console.WriteLine("choose your react \n 0 => Love \n" +
                     " 1 => Gem \n 2 => Haha \n 3 => warning \n 4 =>Sad \n 5 => Angry");
                 if (int.TryParse(Console.ReadLine(), out int intChoice) &&

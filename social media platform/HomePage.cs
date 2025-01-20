@@ -68,15 +68,16 @@ namespace social_media_platform
                 $"\n  comments: \n {posty.Comments}");
             return true;
         }
-        private int takeUserChoice()
+        public int takeUserChoice()
         {
-            Console.WriteLine($@"press {Helper.nextpostnum} for next post
-                press {Helper.previousPostnum} for the previous post
-                press 3 for  watching comments
-                press 4 for unfollow
-                press 5 for react
-                press 6 for editing your own react if you already reacted
-                press {Helper.lastOptionChoice} for writing your own comment");
+            Console.WriteLine($@"press {Helper.nextpostNum} for next post
+                press {Helper.previousPostNum} for the previous post
+                press {Helper.commentsNum} for  watching comments
+                press {Helper.unfollowNum} for unfollow
+                press {Helper.reactNum} for react
+                press {Helper.editingReactNum} for editing your own react if you already reacted
+                press {Helper.WriteCommentNum} for writing your own comment");
+            // if you added new feature you should increase lastOptionChoice in helper
             int y;
             if( int.TryParse(Console.ReadLine(),out y))
             {
@@ -92,37 +93,39 @@ namespace social_media_platform
             return takeUserChoice();
             
         }
-        public int showMultiPosts(User user)
+        public int showMultiPosts(User userm , out long postId)
         {
             if (currentPostIndex < postsDeque.Count())
             {
                 showPost(postsDeque[currentPostIndex]);
-                
+                postId = postsDeque[currentPostIndex].PostId;
             }
             else
             {
                 Console.WriteLine("that all you have for today");
                 Thread.Sleep(5000);
                 Process.GetCurrentProcess().Kill();
+                //logically useless just for the compiler
+                postId = 0;
             }
            int choice= takeUserChoice();
-           if (choice == Helper.previousPostnum &&
+           if (choice == Helper.previousPostNum &&
                 postsDeque.First().Equals(postsDeque[currentPostIndex])){
                 Post post = postsDeque[currentPostIndex];
                 CallFivePosts(PostsAddFirst);
                 currentPostIndex = postsDeque.IndexOf(post) - 1;
             }
-           else if(choice == Helper.previousPostnum)
+           else if(choice == Helper.previousPostNum)
             {
                 currentPostIndex--;
             }
-           else if (choice == Helper.nextpostnum &&
+           else if (choice == Helper.nextpostNum &&
                 postsDeque.Last().Equals(postsDeque[currentPostIndex]))
             {
                 CallFivePosts(PostsAddLast);
                 currentPostIndex++;
             }
-           else if( choice == Helper.nextpostnum)
+           else if( choice == Helper.nextpostNum)
             {
                 currentPostIndex++;
             }
