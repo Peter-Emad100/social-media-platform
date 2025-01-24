@@ -72,7 +72,7 @@ namespace social_media_platform
         {
             Console.WriteLine($@"press {Helper.nextpostNum} for next post
                 press {Helper.previousPostNum} for the previous post
-                press {Helper.commentsNum} for  watching comments
+                press {Helper.showCommentsNum} for  watching comments
                 press {Helper.unfollowNum} for unfollow
                 press {Helper.reactNum} for react
                 press {Helper.WriteCommentNum} for writing your own comment");
