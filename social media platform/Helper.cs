@@ -13,9 +13,8 @@ namespace social_media_platform
         public const int commentsNum = 3;
         public const int unfollowNum = 4;
         public const int reactNum = 5;
-        public const int editingReactNum = 6;
-        public const int WriteCommentNum = 7;
-        public const int lastOptionChoice =7;
-        
+        public const int WriteCommentNum = 6;
+        public const int lastOptionChoice = 6;
+
     }
 }

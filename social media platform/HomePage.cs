@@ -75,7 +75,6 @@ namespace social_media_platform
                 press {Helper.commentsNum} for  watching comments
                 press {Helper.unfollowNum} for unfollow
                 press {Helper.reactNum} for react
-                press {Helper.editingReactNum} for editing your own react if you already reacted
                 press {Helper.WriteCommentNum} for writing your own comment");
             // if you added new feature you should increase lastOptionChoice in helper
             int y;

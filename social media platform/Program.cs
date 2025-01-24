@@ -22,7 +22,8 @@ namespace social_media_platform
             int choice =homepage.showMultiPosts(user,out currentPostID);
             FollowService followService=new FollowService(serviceProvider.GetRequiredService<AppDbContext>());
             PostServices postServices = new PostServices(serviceProvider.GetRequiredService<AppDbContext>());
-            ReactService reactservice = new ReactService(serviceProvider.GetRequiredService<AppDbContext>());
+            ReactService reactService = new ReactService(serviceProvider.GetRequiredService<AppDbContext>());
+            CommentService commentService = new CommentService(serviceProvider.GetRequiredService<AppDbContext>());
             while (true)
             {
                 if (choice == Helper.nextpostNum || choice == Helper.previousPostNum)
@@ -40,9 +41,13 @@ namespace social_media_platform
                 }
                 else if(choice == Helper.reactNum)
                 {
-                    reactservice.AddReact(user, currentPostID);
+                    reactService.AddReact(user, currentPostID);
 
                     choice = homepage.takeUserChoice();
+                }
+                else if (choice == Helper.WriteCommentNum){
+                    commentService.CreateComment(user, currentPostID);
+                    choice= homepage.takeUserChoice();
                 }
             }
         }
