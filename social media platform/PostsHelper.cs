@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace social_media_platform
 {
-    internal static class Helper
+    internal static class PostsHelper
     {
         public const int nextpostNum = 1;
         public const int previousPostNum = 2;
@@ -15,6 +15,7 @@ namespace social_media_platform
         public const int reactNum = 5;
         public const int WriteCommentNum = 6;
         public const int lastOptionChoice = 6;
+
 
     }
 }

@@ -18,18 +18,19 @@ namespace social_media_platform
             homepage.PreparePosts(user);
             long currentPostID;
             int choice =homepage.showMultiPosts(user,out currentPostID);
-            FollowService followService=new FollowService(dbContext);
+            
             PostServices postServices = new PostServices(dbContext);
-            ReactService reactService = new ReactService(dbContext);
+            
             CommentService commentService = new CommentService(dbContext);
             while (true)
             {
-                if (choice == Helper.nextpostNum || choice == Helper.previousPostNum)
+                if (choice == PostsHelper.nextpostNum || choice == PostsHelper.previousPostNum)
                 {
                     homepage.showMultiPosts(user,out currentPostID);
                 }
-                else if(choice == Helper.unfollowNum)
+                else if(choice == PostsHelper.unfollowNum)
                 {
+                    FollowService followService = new FollowService(dbContext);
                     if (followService.unfollow(user, currentPostID))
                         Console.WriteLine("you unfollowed this user");
                     else
@@ -37,17 +38,23 @@ namespace social_media_platform
                     Console.WriteLine("what do you want to do next ?");
                     choice = homepage.takeUserChoice();
                 }
-                else if(choice == Helper.reactNum)
+                else if(choice == PostsHelper.reactNum)
                 {
+                    ReactService reactService = new ReactService(dbContext);
                     reactService.AddReact(user, currentPostID);
 
                     choice = homepage.takeUserChoice();
                 }
-                else if (choice == Helper.WriteCommentNum)
+                else if (choice == PostsHelper.WriteCommentNum)
                 {
                     commentService.CreateComment(user, currentPostID);
 
                     choice= homepage.takeUserChoice();
+                }
+                else if(choice == PostsHelper.showCommentsNum)
+                {
+                    homepage.ShowMultiComments(user, currentPostID);
+                    choice = homepage.takeUserChoice();
                 }
             }
         }

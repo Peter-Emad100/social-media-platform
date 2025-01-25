@@ -18,6 +18,7 @@ namespace social_media_platform
         private int currentFollowedIndex=0;
         private int currentPostIndex=0;
         private Deque<Post> postsDeque=new Deque<Post>();
+        private List<Comment> comments;
         public HomePage(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
@@ -70,17 +71,17 @@ namespace social_media_platform
         }
         public int takeUserChoice()
         {
-            Console.WriteLine($@"press {Helper.nextpostNum} for next post
-                press {Helper.previousPostNum} for the previous post
-                press {Helper.showCommentsNum} for  watching comments
-                press {Helper.unfollowNum} for unfollow
-                press {Helper.reactNum} for react
-                press {Helper.WriteCommentNum} for writing your own comment");
+            Console.WriteLine($@"press {PostsHelper.nextpostNum} for next post
+                press {PostsHelper.previousPostNum} for the previous post
+                press {PostsHelper.showCommentsNum} for  watching comments
+                press {PostsHelper.unfollowNum} for unfollow
+                press {PostsHelper.reactNum} for react
+                press {PostsHelper.WriteCommentNum} for writing your own comment");
             // if you added new feature you should increase lastOptionChoice in helper
             int y;
             if( int.TryParse(Console.ReadLine(),out y))
             {
-                if(y >0 && y <=Helper.lastOptionChoice)
+                if(y >0 && y <=PostsHelper.lastOptionChoice)
                 {
                     return y;
                 }
@@ -108,23 +109,23 @@ namespace social_media_platform
                 postId = 0;
             }
            int choice= takeUserChoice();
-           if (choice == Helper.previousPostNum &&
+           if (choice == PostsHelper.previousPostNum &&
                 postsDeque.First().Equals(postsDeque[currentPostIndex])){
                 Post post = postsDeque[currentPostIndex];
                 CallFivePosts(PostsAddFirst);
                 currentPostIndex = postsDeque.IndexOf(post) - 1;
             }
-           else if(choice == Helper.previousPostNum)
+           else if(choice == PostsHelper.previousPostNum)
             {
                 currentPostIndex--;
             }
-           else if (choice == Helper.nextpostNum &&
+           else if (choice == PostsHelper.nextpostNum &&
                 postsDeque.Last().Equals(postsDeque[currentPostIndex]))
             {
                 CallFivePosts(PostsAddLast);
                 currentPostIndex++;
             }
-           else if( choice == Helper.nextpostNum)
+           else if( choice == PostsHelper.nextpostNum)
             {
                 currentPostIndex++;
             }
@@ -140,53 +141,60 @@ namespace social_media_platform
             }
             catch { return -1; }
         }
-        public void ShowMultiComments(List<Comment> comments)
+        public int takeUserCommentChoice()
         {
-            if (comments.Count() > 0)
+            Console.WriteLine(@$"{CommentsHelper.nextComment} for next comment 
+                {CommentsHelper.changeComment} for change comment (if it is yours)
+                {CommentsHelper.deleteComment} for delete comment (if it is yours)
+                {CommentsHelper.backToPosts} back to posts");
+            int choice;
+            if(int.TryParse(Console.ReadLine(), out choice)&&choice >= 0 && choice <= CommentsHelper.lastOption)
             {
-                for (int i = 0; i < comments.Count; i++)
-                {
-                    long commentId =ShowComment(comments[i]);
-                    Console.WriteLine("0 for next comment \n  1 for change comment (if it is yours)" +
-                        "2 for delete comment (if it is yours)");
-                    int choice;
-                    bool sucess =int.TryParse(Console.ReadLine(),out choice);
-                    if (sucess)
-                    {
-                        if (choice == 0)
-                        {
-
-
-
-                            continue;
-                        }
-                        else if (choice == 1){
-
-                        }
-                        else if (choice == 2)
-                        {
-
-                        }
-                        else
-                        {
-                            Console.WriteLine("sorry you input was incorrect");
-                        }
-
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("sorry you input was incorrect");
-                    }
-                }
+                return choice;
             }
             else
             {
-                Console.WriteLine("there is no comments on this post, be the first and leave your comment");
+                return takeUserCommentChoice();
+            }
+
+        }
+        public void ShowMultiComments(User user, long postId)
+        {
+            GetListOfComments(postId);
+            int x = 0;
+            bool stayIn = true;
+            CommentService commentService = new CommentService(_appDbContext);
+            while (comments.Count() > x && stayIn)
+            {
+                ShowComment(comments.ElementAt(x));
+                int choice = takeUserCommentChoice();
+                
+                switch (choice)
+                {
+                    case CommentsHelper.nextComment:
+                        x++;
+                        break;
+                    case CommentsHelper.changeComment:
+                        commentService.ChangeComment(user, comments.ElementAt(x).CommentId);
+                        break;
+                    case CommentsHelper.deleteComment:
+                        if(commentService.DeleteComment(user, comments.ElementAt(x).CommentId))
+                            comments.RemoveAt(x);
+                        break;
+                    case CommentsHelper.backToPosts:
+                        stayIn = false;
+                        break;
+                    default:
+                        Console.WriteLine("unexpected stuff happend, try again");
+                        break;
+                }
             }
         }
 
-
-        
+        private void GetListOfComments(long postId)
+        {
+            comments= new List<Comment>();
+            comments=_appDbContext.comments.Where(c=>c.PostId == postId).ToList();
+        }
     }
 }
