@@ -93,8 +93,29 @@ namespace social_media_platform
             return takeUserChoice();
             
         }
-        public int showMultiPosts(User userm , out long postId)
+        public void showMultiPosts(User userm , out long postId , int choice)
         {
+            if (choice == PostsHelper.previousPostNum &&
+                postsDeque.First().Equals(postsDeque[currentPostIndex]))
+            {
+                Post post = postsDeque[currentPostIndex];
+                CallFivePosts(PostsAddFirst);
+                currentPostIndex = postsDeque.IndexOf(post) - 1;
+            }
+            else if (choice == PostsHelper.previousPostNum)
+            {
+                currentPostIndex--;
+            }
+            else if (choice == PostsHelper.nextpostNum &&
+                 postsDeque.Last().Equals(postsDeque[currentPostIndex]))
+            {
+                CallFivePosts(PostsAddLast);
+                currentPostIndex++;
+            }
+            else if (choice == PostsHelper.nextpostNum)
+            {
+                currentPostIndex++;
+            }
             if (currentPostIndex < postsDeque.Count())
             {
                 showPost(postsDeque[currentPostIndex]);
@@ -108,28 +129,6 @@ namespace social_media_platform
                 //logically useless just for the compiler
                 postId = 0;
             }
-           int choice= takeUserChoice();
-           if (choice == PostsHelper.previousPostNum &&
-                postsDeque.First().Equals(postsDeque[currentPostIndex])){
-                Post post = postsDeque[currentPostIndex];
-                CallFivePosts(PostsAddFirst);
-                currentPostIndex = postsDeque.IndexOf(post) - 1;
-            }
-           else if(choice == PostsHelper.previousPostNum)
-            {
-                currentPostIndex--;
-            }
-           else if (choice == PostsHelper.nextpostNum &&
-                postsDeque.Last().Equals(postsDeque[currentPostIndex]))
-            {
-                CallFivePosts(PostsAddLast);
-                currentPostIndex++;
-            }
-           else if( choice == PostsHelper.nextpostNum)
-            {
-                currentPostIndex++;
-            }
-            return choice;
         }
         private long ShowComment(Comment comment)
         {

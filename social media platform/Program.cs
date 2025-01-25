@@ -16,8 +16,8 @@ namespace social_media_platform
             User user = userfeatures.login();
             HomePage homepage = new HomePage(dbContext);
             homepage.PreparePosts(user);
-            long currentPostID;
-            int choice =homepage.showMultiPosts(user,out currentPostID);
+            long currentPostID=0;
+            int choice = PostsHelper.nextpostNum;
             
             PostServices postServices = new PostServices(dbContext);
             
@@ -27,14 +27,13 @@ namespace social_media_platform
                 switch (choice)
                 {
                     case PostsHelper.previousPostNum:
-                        homepage.showMultiPosts(user, out currentPostID);
+                        homepage.showMultiPosts(user, out currentPostID,choice);
                         break;
                     case PostsHelper.nextpostNum:
-                        homepage.showMultiPosts(user, out currentPostID);
+                        homepage.showMultiPosts(user, out currentPostID, choice);
                         break;
                     case PostsHelper.showCommentsNum:
                         homepage.ShowMultiComments(user, currentPostID);
-                        choice = homepage.takeUserChoice();
                         break;
                     case PostsHelper.unfollowNum:
                         FollowService followService = new FollowService(dbContext);
@@ -43,21 +42,19 @@ namespace social_media_platform
                         else
                             Console.WriteLine("you already unfollowed this user before");
                         Console.WriteLine("what do you want to do next ?");
-                        choice = homepage.takeUserChoice();
                         break;
                     case PostsHelper.reactNum:
                         ReactService reactService = new ReactService(dbContext);
                         reactService.AddReact(user, currentPostID);
-                        choice = homepage.takeUserChoice();
                         break;
                     case PostsHelper.WriteCommentNum:
                         commentService.CreateComment(user, currentPostID);
-                        choice = homepage.takeUserChoice();
                         break;
                     default:
                         Console.WriteLine("invalid choice");
                         break;
                 }
+                choice = homepage.takeUserChoice();
             }
         }
         static ServiceProvider InitializeServices()
