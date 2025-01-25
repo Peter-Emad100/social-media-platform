@@ -24,37 +24,39 @@ namespace social_media_platform
             CommentService commentService = new CommentService(dbContext);
             while (true)
             {
-                if (choice == PostsHelper.nextpostNum || choice == PostsHelper.previousPostNum)
+                switch (choice)
                 {
-                    homepage.showMultiPosts(user,out currentPostID);
-                }
-                else if(choice == PostsHelper.unfollowNum)
-                {
-                    FollowService followService = new FollowService(dbContext);
-                    if (followService.unfollow(user, currentPostID))
-                        Console.WriteLine("you unfollowed this user");
-                    else
-                        Console.WriteLine("you already unfollowed this user before");
-                    Console.WriteLine("what do you want to do next ?");
-                    choice = homepage.takeUserChoice();
-                }
-                else if(choice == PostsHelper.reactNum)
-                {
-                    ReactService reactService = new ReactService(dbContext);
-                    reactService.AddReact(user, currentPostID);
-
-                    choice = homepage.takeUserChoice();
-                }
-                else if (choice == PostsHelper.WriteCommentNum)
-                {
-                    commentService.CreateComment(user, currentPostID);
-
-                    choice= homepage.takeUserChoice();
-                }
-                else if(choice == PostsHelper.showCommentsNum)
-                {
-                    homepage.ShowMultiComments(user, currentPostID);
-                    choice = homepage.takeUserChoice();
+                    case PostsHelper.previousPostNum:
+                        homepage.showMultiPosts(user, out currentPostID);
+                        break;
+                    case PostsHelper.nextpostNum:
+                        homepage.showMultiPosts(user, out currentPostID);
+                        break;
+                    case PostsHelper.showCommentsNum:
+                        homepage.ShowMultiComments(user, currentPostID);
+                        choice = homepage.takeUserChoice();
+                        break;
+                    case PostsHelper.unfollowNum:
+                        FollowService followService = new FollowService(dbContext);
+                        if (followService.unfollow(user, currentPostID))
+                            Console.WriteLine("you unfollowed this user");
+                        else
+                            Console.WriteLine("you already unfollowed this user before");
+                        Console.WriteLine("what do you want to do next ?");
+                        choice = homepage.takeUserChoice();
+                        break;
+                    case PostsHelper.reactNum:
+                        ReactService reactService = new ReactService(dbContext);
+                        reactService.AddReact(user, currentPostID);
+                        choice = homepage.takeUserChoice();
+                        break;
+                    case PostsHelper.WriteCommentNum:
+                        commentService.CreateComment(user, currentPostID);
+                        choice = homepage.takeUserChoice();
+                        break;
+                    default:
+                        Console.WriteLine("invalid choice");
+                        break;
                 }
             }
         }

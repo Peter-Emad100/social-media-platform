@@ -22,9 +22,9 @@ namespace social_media_platform
                 ReactLog reactLog = _appDbContext.reactLogs.SingleOrDefault(r => r.UserId == user.UserId && r.PostId == postId);
                 if (reactLog != null)
                 {
-                    Console.WriteLine("you already have reacted to this comment");
-                    Console.WriteLine("for deleting you comment press 1");
-                    Console.WriteLine("for editing you comment press 2");
+                    Console.WriteLine("you already have reacted to this Post");
+                    Console.WriteLine("for deleting your react press 1");
+                    Console.WriteLine("for editing your react press 2");
                     Console.WriteLine("for back to post service press 3");
                     int y;
                     if (int.TryParse(Console.ReadLine(), out y))
