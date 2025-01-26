@@ -1,4 +1,5 @@
-﻿using Nito.Collections;
+﻿using Microsoft.IdentityModel.Tokens;
+using Nito.Collections;
 using social_media_platform.data;
 using social_media_platform.models;
 using System;
@@ -107,6 +108,14 @@ namespace social_media_platform
                 CallFivePosts(PostsAddFirst, user);
                 currentPostIndex=postsDeque.IndexOf(post);
             }
+            if (postsDeque.IsNullOrEmpty())
+            {
+                Console.WriteLine("you don't follow anyUser");
+                Thread.Sleep(5000);
+                Process.GetCurrentProcess().Kill();
+                //logically useless just for the compiler
+                postId = 0;
+            }
             if (currentPostIndex==0)
             {
                 Console.WriteLine("sorry there is no more previous posts");
@@ -127,6 +136,14 @@ namespace social_media_platform
             if (postsDeque.Count ==currentPostIndex)
             {
                 CallFivePosts(PostsAddLast, user);
+            }
+            if (postsDeque.IsNullOrEmpty())
+            {
+                Console.WriteLine("you don't follow anyUser");
+                Thread.Sleep(5000);
+                Process.GetCurrentProcess().Kill();
+                //logically useless just for the compiler
+                postId = 0;
             }
             if (postsDeque.Count == currentPostIndex)
             {
