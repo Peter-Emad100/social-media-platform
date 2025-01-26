@@ -8,13 +8,14 @@ namespace social_media_platform
 {
     internal static class PostsHelper
     {
-        public const int nextpostNum = 1;
-        public const int previousPostNum = 2;
-        public const int showCommentsNum = 3;
-        public const int unfollowNum = 4;
-        public const int reactNum = 5;
-        public const int WriteCommentNum = 6;
-        public const int lastOptionChoice = 6;
+        public const int nextpost = 1;
+        public const int previousPost = 2;
+        public const int showComments = 3;
+        public const int unfollow = 4;
+        public const int react = 5;
+        public const int WriteComment = 6;
+        public const int WritePost = 7;
+        public const int lastOptionChoice = 7;
 
 
     }

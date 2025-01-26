@@ -78,12 +78,13 @@ namespace social_media_platform
         }
         public int takeUserChoice()
         {
-            Console.WriteLine($@"press {PostsHelper.nextpostNum} for next post
-                press {PostsHelper.previousPostNum} for the previous post
-                press {PostsHelper.showCommentsNum} for  watching comments
-                press {PostsHelper.unfollowNum} for unfollow
-                press {PostsHelper.reactNum} for react
-                press {PostsHelper.WriteCommentNum} for writing your own comment");
+            Console.WriteLine($@"press {PostsHelper.nextpost} for next post
+                press {PostsHelper.previousPost} for the previous post
+                press {PostsHelper.showComments} for  watching comments
+                press {PostsHelper.unfollow} for unfollow
+                press {PostsHelper.react} for react
+                press {PostsHelper.WriteComment} for writing your own comment
+                press {PostsHelper.WritePost} for writing new post");
             // if you added new feature you should increase lastOptionChoice in helper
             int y;
             if( int.TryParse(Console.ReadLine(),out y))
