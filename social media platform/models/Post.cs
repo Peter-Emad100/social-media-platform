@@ -23,15 +23,11 @@ namespace social_media_platform.models
 
         public override bool Equals(object? obj)
         {
-            Post post = (Post)obj;
-            if (post.PostId == this.PostId)
+            if (obj is Post post)
             {
-                return true;
+                return this.PostId == post.PostId;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

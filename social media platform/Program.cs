@@ -27,10 +27,10 @@ namespace social_media_platform
                 switch (choice)
                 {
                     case PostsHelper.previousPostNum:
-                        homepage.showMultiPosts(user, out currentPostID,choice);
+                        homepage.showPreviousPost(user, out currentPostID);
                         break;
                     case PostsHelper.nextpostNum:
-                        homepage.showMultiPosts(user, out currentPostID, choice);
+                        homepage.showNextPost(user, out currentPostID);
                         break;
                     case PostsHelper.showCommentsNum:
                         homepage.ShowMultiComments(user, currentPostID);

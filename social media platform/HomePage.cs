@@ -14,54 +14,60 @@ namespace social_media_platform
     internal class HomePage
     {
         internal AppDbContext _appDbContext;
-        private List<long> followedUsersIds=new List<long>();
-        private int currentFollowedIndex=0;
+        private List<long> UsersIds=new List<long>();
+        private int currentUsersIndex=0;
         private int currentPostIndex=0;
         private Deque<Post> postsDeque=new Deque<Post>();
         private List<Comment> comments;
+        private bool morePosts= true;
         public HomePage(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        private void GetListOfFollowedUsers(User user)
+        private void GetListOfFollowedUsers(User user) 
         {
-               followedUsersIds = _appDbContext.followedUsers
+               UsersIds = _appDbContext.followedUsers
                 .Where(f => f.FollowerId == user.UserId)
                 .Select(f => f.FollowedId)
                 .ToList();
         }
         private void PostsAddFirst()
         {
-            postsDeque.AddToFront(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[currentFollowedIndex]).FirstOrDefault());
+         var post = _appDbContext.posts
+         .Where(u => u.UserId == UsersIds[currentUsersIndex])
+         .FirstOrDefault();
+
+            if (post != null)
+            {
+                postsDeque.AddToFront(post);
+            }
         }
         private void PostsAddLast()
         {
-            postsDeque.AddToBack(_appDbContext.posts.Where(u => u.UserId == followedUsersIds[currentFollowedIndex]).FirstOrDefault());
+            var post = _appDbContext.posts
+            .Where(u => u.UserId == UsersIds[currentUsersIndex])
+            .FirstOrDefault();
+
+            if (post != null)
+            {
+                postsDeque.AddToBack(post);
+            }
         }
-        private void CallFivePosts(Action act)
+        private void CallFivePosts(Action act, User user)
         {
             for(int i = 0; i < 5; i++)
             {
-                if (followedUsersIds.Count > currentFollowedIndex)
+                if (UsersIds.Count > currentUsersIndex)
                 {
                     act();
-                    currentFollowedIndex++;
+                    currentUsersIndex++;
                 }
-                /*
-                if (posts.First() == null)
-                {
-                    posts.RemoveFirst();
-                }
-                if (posts.Last() == null)
-                {
-                    posts.RemoveLast();
-                }*/
             }
         }
         public void PreparePosts(User user)
         {
             GetListOfFollowedUsers(user);
-            CallFivePosts(PostsAddFirst);
+            CallFivePosts(PostsAddFirst,user);
         }
         private bool showPost(Post posty)
         {
@@ -93,43 +99,51 @@ namespace social_media_platform
             return takeUserChoice();
             
         }
-        public void showMultiPosts(User userm , out long postId , int choice)
+        public void showPreviousPost(User user, out long postId)
         {
-            if (choice == PostsHelper.previousPostNum &&
-                postsDeque.First().Equals(postsDeque[currentPostIndex]))
+            if (currentPostIndex==0)
             {
                 Post post = postsDeque[currentPostIndex];
-                CallFivePosts(PostsAddFirst);
-                currentPostIndex = postsDeque.IndexOf(post) - 1;
+                CallFivePosts(PostsAddFirst, user);
+                currentPostIndex=postsDeque.IndexOf(post);
             }
-            else if (choice == PostsHelper.previousPostNum)
+            if (currentPostIndex==0)
             {
+                Console.WriteLine("sorry there is no more previous posts");
+                postId = postsDeque[++currentPostIndex].PostId;
                 currentPostIndex--;
-            }
-            else if (choice == PostsHelper.nextpostNum &&
-                 postsDeque.Last().Equals(postsDeque[currentPostIndex]))
-            {
-                CallFivePosts(PostsAddLast);
-                currentPostIndex++;
-            }
-            else if (choice == PostsHelper.nextpostNum)
-            {
-                currentPostIndex++;
-            }
-            if (currentPostIndex < postsDeque.Count())
-            {
-                showPost(postsDeque[currentPostIndex]);
-                postId = postsDeque[currentPostIndex].PostId;
+                return;
             }
             else
             {
-                Console.WriteLine("that all you have for today");
-                Thread.Sleep(5000);
-                Process.GetCurrentProcess().Kill();
-                //logically useless just for the compiler
-                postId = 0;
+                showPost(postsDeque[--currentPostIndex]);
+                postId = postsDeque[currentPostIndex].PostId;
+                return;
+            }
+
+        }
+        public void showNextPost(User user, out long postId)
+        {
+            if (postsDeque.Count ==currentPostIndex)
+            {
+                CallFivePosts(PostsAddLast, user);
+            }
+            if (postsDeque.Count == currentPostIndex)
+            {
+                Console.WriteLine("sorry there is no more Next posts");
+                postId = postsDeque[--currentPostIndex].PostId;
+                currentPostIndex++;
+                return;
+            }
+            else
+            {
+                showPost(postsDeque[currentPostIndex]);
+                postId = postsDeque[currentPostIndex].PostId;
+                currentPostIndex++;
+                return;
             }
         }
+
         private long ShowComment(Comment comment)
         {
             try
